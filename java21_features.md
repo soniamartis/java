@@ -1,4 +1,4 @@
-# Java 21 new features
+# Java New Features till 21
 
 ### Regular expression use of named groups
 - The named group is represented as `?<name>` as the first element of the grp definition
