@@ -1,6 +1,7 @@
 # Java 21 new features
 
 ### Regular expression use of named groups
+- The named group is represented as ?<name> as the first element of the grp definition
 ```java
 String line = "1;New York;8 336 817";
 Pattern pattern = Pattern.compile("""
