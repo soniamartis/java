@@ -67,3 +67,26 @@ var executor = Executors.newVirtualThreadPerTaskExecutor();
 ### Deprecated APIs
 - finalize() method
 - new constructors on wrapper classes like new Integer(num)-> Integer.valueOf(num) in preparation of value types from the valhalla project
+
+### Sealed interfaces and pattern matching
+```java
+    sealed interface Interest permits CompoundInterest,SimpleInterest{}
+
+    record CompoundInterest(int noOfYears) implements Interest{}
+
+    record SimpleInterest(double fixedRate) implements Interest{}
+
+
+    sealed interface Loan permits SecuredLoan,UnsecuredLoan {}
+
+    record SecuredLoan(SimpleInterest simpleInterest) implements Loan{}
+
+    record UnsecuredLoan(double interest, Interest interestType) implements Loan{}
+
+    Loan l = new UnsecuredLoan(1.2d,new CompoundInterest(10));
+        switch (l){
+            case SecuredLoan sl -> System.out.println("loan is " + sl);
+            case UnsecuredLoan(double interest, SimpleInterest abc) -> System.out.println("loan interest is " + interest + " and simpl type is " + abc);
+            case UnsecuredLoan(double interest, CompoundInterest abc) -> System.out.println("loan interest is " + interest + " and comp type is " + abc);
+        }
+```
