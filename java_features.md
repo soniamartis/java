@@ -1,4 +1,4 @@
-# Java New Features till 21
+# Java New Features exploration
 
 ### Regular expression use of named groups
 - The named group is represented as `?<name>` as the first element of the grp definition
@@ -90,4 +90,21 @@ var executor = Executors.newVirtualThreadPerTaskExecutor();
             case UnsecuredLoan(double interest, SimpleInterest abc) -> System.out.println("loan interest is " + interest + " and simpl type is " + abc);
             case UnsecuredLoan(double interest, CompoundInterest abc) -> System.out.println("loan interest is " + interest + " and comp type is " + abc);
         }
+```
+
+### Records
+- It is a final class that extends java.lang.Record and no other class/record can extend from a record
+- It can implement interfaces
+- It can be created either thru the canonical constructor (ueing new(a,b..)) or a compact constructor
+- We can also add more constructors, but at the end of the day, these constructors must call the canonical constructor
+```java
+record Range(int start, int end){
+  Range{ // compact constructor
+    if(start > end){ // will ensure that only valid records are created 
+      throw new IllegalStateException();
+    }
+  }
+}
+
+
 ```
