@@ -21,7 +21,77 @@ if(matcher.matches(line)){
 ```
 
 ### SequencedCollection, SequencedSet and SequencedMap
-- watch episode 19 of jEP cafe
+- Collection interface had 2 child interfaces, Set and List
+- List maintains the insertion(encounter) order of elements
+- Set ensures there are no dupes
+- SortedSet extends Set and maintains the elements in sorted order
+- Sorted order means use of a comparator.This comparator can be embedded into the objects in the case of Comparable or it can be an external Comparator
+- We cannot add an element at a certain location within a sortedset, neither get or remove(we can get/remove it with iterators, but not with index)
+- Ordering elements means each element has an index, where we can add at an index, remove from index and get from index
+- Encounter order: Order in which an iterator will iterate over the elements in the collection
+- LinkedHashSet is another impl of set , that guarantees uniqueness, and has few properties of list, but not all of them, which prevents it from implementing java.util.List
+- There was nothing in the Collection api so far to model this shared behaviour
+- SequnecedCollection have now been introduced to bridge the gap between orderedCollections and sortedCollections
+- New behaviour added: getting, adding, remving from the start and end of collection as well as collection reversal
+
+- Before Java21 : List extends Collection
+- in Java21: List extends SequencedCollection extends Collection
+- in Java21: SortedSet extends Set, SequencedSet
+
+
+|  Operation | before 21 | In 21|
+| ------------- | ------------- |---|
+| get first element|get(0) |getFirst()|
+| remove first element| remove(0)| removeFirst()|
+|add first element| add(0,elem)| addFirst(elem)|
+| get last element| get(list.size()-1) | getLast()|
+| remove las element| remove(list.size()-1)| removeLast()|
+| add last element| add(elem)| add(elem)/ addLast(elem)|
+| reverse collection| Collections.reverse(list)| list.reversed()|
+
+
+- Collection hierarchy before Java 21
+
+```mermaid
+graph TD;
+    Collection-->Set;
+    Set-->SortedSet;
+    Set-->LinkedHashSet;
+    SortedSet-->NavigableSet;
+    Collection-->List;
+```
+
+- Collection hierarchy from Java 21
+```mermaid
+graph TD;
+    Collection-->Set;
+    Collection-->SequencedCollection;
+    Set-->SortedSet;
+    SequencedCollection-->SequencedSet;
+    SequencedSet-->SortedSet;
+    SequencedSet-->LinkedHashSet;
+    Set-->LinkedHashSet;
+    SequencedCollection-->List;
+    SortedSet-->NavigableSet;
+    
+```
+
+- Queue Hierarchy before Java 21
+```mermaid
+graph TD;
+    Collection-->Queue;
+    Queue-->Deque;
+```
+
+- Queue Hierarchy from Java 21
+```mermaid
+graph TD;
+    Collection-->Queue;
+    Collection-->SequencedCollection;
+    Queue-->Deque;
+    SequencedCollection-->Deque;
+```  
+
 
 ### Addition of creation methods to collections API
 ```java
